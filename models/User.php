@@ -47,6 +47,7 @@ class User extends \yii\db\ActiveRecord
             [['username'], 'string', 'max' => 45],
             [['email'], 'string', 'max' => 255],
             [['email'], 'unique'],
+            [['email'], 'email']
         ];
     }
 
@@ -67,6 +68,22 @@ class User extends \yii\db\ActiveRecord
             'created' => Yii::t('app', 'Created'),
             'updated' => Yii::t('app', 'Updated'),
         ];
+    }
+
+    public function beforeValidate()
+    {
+        if ($this->isNewRecord){
+            $this->uid = Yii::$app->getSecurity()->generatePasswordHash(date('YmdHis').rand(1, 999999));
+        }
+        return parent::beforeValidate();
+    }
+
+    public function beforeSave($insert)
+    {
+        if ($this->isNewRecord){
+            $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+        }
+        return true;
     }
 
     /**
@@ -100,4 +117,39 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Trip::className(), ['user_id' => 'id']);
     }
+
+        /**
+     * Finds user by username
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findByUsername($username)
+    {
+        $res = (new \yii\db\Query())
+            ->select(['*'])
+            ->from('user')
+            ->where(['username' => $username])
+           ->all();
+
+
+        if (strcasecmp($res[0]['username'], $username) === 0) {
+            $user  = [
+                'id' => $res[0]['id'],
+                'uid' => $res[0]['uid'],
+                'username' => $res[0]['username'],
+                'email' => $res[0]['email'],
+                'password' => $res[0]['password'],
+                'status' => $res[0]['status'],
+                'contact_email' => $res[0]['contact_email'],
+                'created' => $res[0]['created'],
+                'updated' => $res[0]['updated'],
+            ];
+              
+            return new static($user);
+        }
+
+        return null;
+    }
+
 }

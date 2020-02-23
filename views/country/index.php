@@ -21,18 +21,40 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'code',
-            'name',
-            'phonecode',
-            'lat',
-            'lng',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            // ['class' => 'yii\grid\SerialColumn'],
+            // 'id',
+            [
+                'attribute' => 'code',
+                'label' => 'Κωδικός Χώρας',
+                'headerOptions' => ['style' => 'text-align:center']
+            ],
+            [
+                'attribute' => 'name',
+                'label' => 'Όνομα Χώρας',
+                'headerOptions' => ['style' => 'text-align:center']
+            ],
+            [
+                'attribute' => 'phonecode',
+                'label' => 'Τηλεφωνικός Κωδικός',
+                'headerOptions' => ['style' => 'text-align:center']
+            ],
+            [
+                'attribute' => 'lat',
+                'label' => 'Γεωγραφικό πλάτος',
+                'headerOptions' => ['style' => 'text-align:center']
+            ],
+            [
+                'attribute' => 'lng',
+                'label' => 'Γεωγραφικό μήκος',
+                'headerOptions' => ['style' => 'text-align:center']
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Ενέργειες',
+                'headerOptions' => ['style' => 'text-align:center']
+            ],
         ],
-    ]); ?>
+        ]); ?>
 
 
 </div>
