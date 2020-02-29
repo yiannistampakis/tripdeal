@@ -72,15 +72,15 @@ class User extends \yii\db\ActiveRecord
 
     public function beforeValidate()
     {
-        if ($this->isNewRecord){
-            $this->uid = Yii::$app->getSecurity()->generatePasswordHash(date('YmdHis').rand(1, 999999));
+        if ($this->isNewRecord) {
+            $this->uid = Yii::$app->getSecurity()->generatePasswordHash(date('YmdHis') . rand(1, 999999));
         }
         return parent::beforeValidate();
     }
 
     public function beforeSave($insert)
     {
-        if ($this->isNewRecord){
+        if ($this->isNewRecord) {
             $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
         }
         return true;
@@ -118,7 +118,7 @@ class User extends \yii\db\ActiveRecord
         return $this->hasMany(Trip::className(), ['user_id' => 'id']);
     }
 
-        /**
+    /**
      * Finds user by username
      *
      * @param string $username
@@ -130,7 +130,7 @@ class User extends \yii\db\ActiveRecord
             ->select(['*'])
             ->from('user')
             ->where(['username' => $username])
-           ->all();
+            ->all();
 
 
         if (strcasecmp($res[0]['username'], $username) === 0) {
@@ -145,11 +145,31 @@ class User extends \yii\db\ActiveRecord
                 'created' => $res[0]['created'],
                 'updated' => $res[0]['updated'],
             ];
-              
+
             return new static($user);
         }
 
         return null;
     }
 
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        echo $password;
+        // die;
+        if (Yii::$app->getSecurity()->validatePassword($password, $this->password)) {
+            echo 'ok';
+            return true;
+            // die;
+        } else {
+            echo 'not ok';
+            // die;
+            // wrong password
+        }
+    }
 }

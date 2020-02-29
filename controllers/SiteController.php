@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
 
+
 class SiteController extends Controller
 {
     /**
@@ -73,13 +74,22 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
+
+            echo 'here1';
+            die;
             return $this->goHome();
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+            echo 'here2';
+            die;
             return $this->goBack();
         }
+
+        echo 'here3';
+        // die;
 
         $model->password = '';
         return $this->render('login', [
@@ -100,6 +110,7 @@ class SiteController extends Controller
 
         $newUser = new User();
         if ($newUser->load(Yii::$app->request->post()) && $newUser->save()) {
+            Yii::$app->session->setFlash('success', "You are now successfully registered.");
             return $this->goHome();
         }
 
