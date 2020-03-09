@@ -15,9 +15,9 @@ class m200202_160729_create_table_lang extends Migration
         $this->createTable('place_lang', [
             'id' => $this->primaryKey()->unsigned(),
             'place_id' => $this->integer()->unsigned()->notNull(),
-            'locality'=> $this->string(45)->notNull(),
+            'locality' => $this->string(45)->notNull(),
             'country' => $this->string(45)->notNull(),
-            'lang' => $this->string(2)->notNull(), 
+            'lang' => $this->string(2)->notNull(),
         ]);
         $this->createIndex(
             'idx_place_lang_place_id_place',
@@ -32,9 +32,8 @@ class m200202_160729_create_table_lang extends Migration
             'place',
             'id',
             'restrict',
-            'cascade'            
+            'cascade'
         );
-
     }
 
     /**
@@ -51,22 +50,5 @@ class m200202_160729_create_table_lang extends Migration
             'place_lang'
         );
         $this->dropTable('place_lang');
-        // echo "m200202_160729_create_table_lang cannot be reverted.\n";
-        // return false;
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m200202_160729_create_table_lang cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
